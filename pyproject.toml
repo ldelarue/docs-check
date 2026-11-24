@@ -1,6 +1,6 @@
 [project]
 name = "docs-check"
-version = "0.1.0"
+version = "0.2.0"
 description = "Documentation QA checks for Zensical and Markdown repositories."
 readme = "README.md"
 license = "CC-BY-4.0"

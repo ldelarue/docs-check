@@ -94,7 +94,7 @@ def links(
     )
 
 
-@app.command()
+@app.command("all")
 def all_checks(
     config: Path | None = typer.Option(None, "--config", help="docs-check.toml"),
     strict: bool = typer.Option(False, "--strict", help="Fail on prose warnings"),

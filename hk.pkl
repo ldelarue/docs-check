@@ -1,0 +1,10 @@
+amends "package://github.com/jdx/hk/releases/download/v2.0.1/hk@2.0.1#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.0.1/hk@2.0.1#/Builtins.pkl"
+
+steps {
+  ["ruff-format"] = Builtins.ruff_format
+  ["ruff"] = (Builtins.ruff) {
+    depends = "ruff-format"
+  }
+  ["shellcheck"] = Builtins.shellcheck
+}

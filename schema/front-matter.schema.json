@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stash.ovh.net/projects/EMAIL/repos/poc-runbook/schema/front-matter.schema.json",
+  "title": "poc-runbook page front matter",
+  "description": "Contract for Markdown front matter under docs/. scripts/check_doc_style.py validates every page against this file.",
+  "type": "object",
+  "required": [
+    "title",
+    "diataxis",
+    "doc_status"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Page title. Must match the body H1."
+    },
+    "confluence_page_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$",
+      "description": "Confluence page ID. Required for migrated and archive pages; forbidden on meta pages."
+    },
+    "confluence_space": {
+      "type": "string",
+      "description": "Confluence space key, for example EUMailHA."
+    },
+    "confluence_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Source Confluence URL."
+    },
+    "diataxis": {
+      "enum": [
+        "tutorial",
+        "how-to",
+        "reference",
+        "explanation",
+        "overview"
+      ],
+      "description": "Documentation type. See docs/references/diataxis.md."
+    },
+    "doc_status": {
+      "enum": [
+        "stub",
+        "migrated",
+        "reviewed",
+        "archive",
+        "meta",
+        "section"
+      ],
+      "description": "Lifecycle status. Use reviewed only after a human review."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Owning team or role, not a person."
+    },
+    "last_reviewed": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date of the last human review. Required when doc_status is reviewed."
+    },
+    "audience": {
+      "type": "string",
+      "description": "Primary audience, for example new-joiner, sre, developer, operator."
+    },
+    "related": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Relative paths to related pages under docs/."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Free-form topic tags."
+    },
+    "source": {
+      "enum": [
+        "confluence",
+        "jira",
+        "repo"
+      ],
+      "default": "confluence",
+      "description": "Origin of the page. Use jira for ADRs migrated from JIRA; use repo for repository-only pages."
+    },
+    "jira_issue": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]+-[0-9]+$",
+      "description": "JIRA issue key when source is jira."
+    },
+    "adr_status": {
+      "enum": [
+        "proposed",
+        "accepted",
+        "rejected",
+        "deprecated",
+        "superseded"
+      ],
+      "description": "ADR lifecycle status."
+    },
+    "adr_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the decision (ISO 8601)."
+    },
+    "adr_deciders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "People or roles who made the decision."
+    },
+    "postmortem_status": {
+      "enum": [
+        "open",
+        "completed",
+        "closed"
+      ],
+      "description": "Post-mortem lifecycle status."
+    },
+    "incident_id": {
+      "type": "string",
+      "description": "Incident ticket, JIRA key, or Confluence page ID when no ticket exists."
+    },
+    "incident_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the incident (ISO 8601)."
+    },
+    "postmortem_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the post-mortem was last updated (ISO 8601)."
+    },
+    "severity": {
+      "type": "string",
+      "description": "Incident severity on the team scale."
+    },
+    "nav_order": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optional navigation order within a section."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "doc_status": {
+            "not": {
+              "enum": [
+                "meta",
+                "section"
+              ]
+            }
+          },
+          "source": {
+            "enum": [
+              "confluence"
+            ]
+          }
+        },
+        "required": [
+          "doc_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "confluence_page_id",
+          "confluence_space",
+          "confluence_url"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "const": "jira"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "required": [
+          "jira_issue"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "doc_status": {
+            "const": "reviewed"
+          }
+        },
+        "required": [
+          "doc_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "last_reviewed"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": true
+}

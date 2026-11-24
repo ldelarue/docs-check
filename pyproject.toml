@@ -1,0 +1,26 @@
+[project]
+name = "docs-check"
+version = "0.1.0"
+description = "Documentation QA checks for Zensical and Markdown repositories."
+readme = "README.md"
+license = "CC-BY-4.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = [
+  "typer>=0.12",
+]
+
+[project.scripts]
+docs-check = "docs_check.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.24,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff.lint]
+ignore = ["B008"]

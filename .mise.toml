@@ -1,0 +1,31 @@
+[tools]
+python = "3.12"
+uv = "latest"
+hk = "latest"
+ruff = "latest"
+shellcheck = "latest"
+lychee = "latest"
+
+[tasks.test]
+description = "Run the test suite"
+run = "uv run pytest"
+
+[tasks.lint]
+description = "Check formatting and lint"
+run = "hk check --all"
+
+[tasks.fmt]
+description = "Apply formatting and lint fixes"
+run = "hk fix --all"
+
+[tasks.hooks]
+description = "Install the hk pre-commit hook"
+run = "hk install --mise"
+
+[tasks.build]
+description = "Build wheel and sdist"
+run = "uv build"
+
+[tasks.install-local]
+description = "Build and install the local wheel with uv tool"
+run = "uv build && uv tool install --force \"$(ls dist/docs_check-*-py3-none-any.whl | sort -V | tail -1)\""

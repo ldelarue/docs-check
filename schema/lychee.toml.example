@@ -1,0 +1,33 @@
+# Lychee configuration for external links in the documentation and sidebar.
+# Run with: mise run docs:links
+
+max_concurrency = 8
+max_retries = 2
+retry_wait_time = 2
+timeout = 20
+
+# 401/403/302 mean "reachable but authentication is required".
+accept = [200, 204, 301, 302, 307, 308, 401, 403]
+
+# Internal-only hosts are checked manually from the OVH network.
+exclude = [
+  "file://",
+  "https://gw2sdev-docker.ovh.net:41883/",
+  "https://gra465.logs.ovh.com/",
+  "https://interne.ovh.net/",
+  "https://qos.ovh.exchange/",
+  "https://argo.antispam.mail.ovh.net/",
+  "https://grafana.antispam.mail.ovh.net/",
+  "https://grafana.lars.closeyourey.es/",
+  "https://grafana.lars.mail.ovh.net/",
+  "https://people.interne.ovh.net/",
+  "https://mycat.ovhcloud.tools/",
+  "https://onegate.ovhcloud.tools/",
+  "https://otf.ovhcloud.tools/",
+  "https://people.ovh.net/",
+  "https://skillhub.ovhcloud.training/",
+  "https://platform.pages.ovhcloud.tools/",
+  "https://gitlab.mail.ovh.net/",
+]
+
+cache = true
